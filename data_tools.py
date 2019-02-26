@@ -45,12 +45,12 @@ rows = {
 }
 
 def preprocess_data():
-    df = pd.read_csv('./data.csv')
-    df.month = df.month.map(months)
-    df.day = df.day.map(days)
+    df = pd.read_csv('./data.csv') # Read CSV into a data frame
+    df.month = df.month.map(months) # Map the month strings to numbers
+    df.day = df.day.map(days) # Map the day strings to numbers
     x = df.values
     normalizer = preprocessing.MinMaxScaler()
-    x_scaled = normalizer.fit_transform(x)
+    x_scaled = normalizer.fit_transform(x) # Normalize all of the data
     df = pd.DataFrame(x_scaled, columns=df.columns)
     x = np.array(df.month)
     y = df.area.values
@@ -58,10 +58,10 @@ def preprocess_data():
     for col in df:
         if col != 'area':
             x = df[col].values
-            coef = pearsonr(x, y)
+            coef = pearsonr(x, y) # Calculate the Pearson Coefficent
             temp.append(coef[0])
 
     top = pd.DataFrame(temp, columns=['pcc'])
     top.rename(index=rows, inplace=True)
-    top = top.sort_values(['pcc'], ascending=False)
-    return df, top
+    top = top.sort_values(['pcc'], ascending=False) # Sort the PCC values so the top 5 are easy to get
+    return df, top # Return this as a tuple for use else where!
