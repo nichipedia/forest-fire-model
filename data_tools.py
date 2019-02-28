@@ -44,6 +44,25 @@ rows = {
         12: 'area'
 }
 
+def getKDataFolds(k):
+    top5 = []
+    kfolds = []
+
+    data, pcc = preprocess_data()
+    labels = pcc.head().index.values
+    top5Features = data[labels]
+    featureCount = len(data.index.values)
+    for i in range(0,k):
+        df1 = pd.DataFrame(columns=data.columns.values)
+        df2 = pd.DataFrame(columns=labels)
+        kfolds.append(df1)
+        top5.append(df2)
+    for i in range(0, featureCount):
+        kfolds[i%k] = kfolds[i%k].append(data.ix[i])
+        top5[i%k] = top5[i%k].append(top5Features.ix[i])
+    return kfolds, top5
+
+
 def preprocess_data():
     df = pd.read_csv('./data.csv') # Read CSV into a data frame
     df.month = df.month.map(months) # Map the month strings to numbers
