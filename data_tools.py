@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from sklearn import preprocessing
+import math
 from scipy.stats.stats import pearsonr
 
 months = {
@@ -63,10 +64,11 @@ def getKDataFolds(k):
     return kfolds, top5
 
 
-def preprocess_data():
+def preprocess_data(normalize=True):
     df = pd.read_csv('./data.csv') # Read CSV into a data frame
     df.month = df.month.map(months) # Map the month strings to numbers
     df.day = df.day.map(days) # Map the day strings to numbers
+    orig = df
     x = df.values
     normalizer = preprocessing.MinMaxScaler()
     x_scaled = normalizer.fit_transform(x) # Normalize all of the data
@@ -78,9 +80,12 @@ def preprocess_data():
         if col != 'area':
             x = df[col].values
             coef = pearsonr(x, y) # Calculate the Pearson Coefficent
-            temp.append(coef[0])
+            temp.append(math.fabs(coef[0]))
 
     top = pd.DataFrame(temp, columns=['pcc'])
     top.rename(index=rows, inplace=True)
     top = top.sort_values(['pcc'], ascending=False) # Sort the PCC values so the top 5 are easy to get
-    return df, top # Return this as a tuple for use else where!
+    if normalize:
+        return df, top # Return this as a tuple for use else where!
+    else:
+        return orig, top
