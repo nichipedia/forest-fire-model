@@ -13,6 +13,7 @@ for label in top5:
     plt.title(title)
     plt.xlabel(label)
     plt.ylabel('area')
+    plt.ylim(0, 400)
     plt.scatter(x,y,c='blue')
     plt.savefig('./plots/' + title + '.png')
     plt.clf()

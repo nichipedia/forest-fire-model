@@ -51,9 +51,10 @@ def getKDataFolds(k):
 
     data, pcc = preprocess_data()
     labels = pcc.head().index.values
+    labels = np.append(labels, ['area'])
     top5Features = data[labels]
     featureCount = len(data.index.values)
-    for i in range(0,k):
+    for i in range(0, k):
         df1 = pd.DataFrame(columns=data.columns.values)
         df2 = pd.DataFrame(columns=labels)
         kfolds.append(df1)
