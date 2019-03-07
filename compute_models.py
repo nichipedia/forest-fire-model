@@ -3,6 +3,8 @@ import pandas as pd
 from sklearn.preprocessing import PolynomialFeatures
 from PolyModel import PolyModel
 from data_tools import preprocess_data
+from stats import kFoldCrossValidation
+from data_tools import getKDataFolds
 
 features = ['X', 'Y', 'month', 'day', 'FFMC', 'DMC', 'DC', 'ISI', 'temp', 'RH', 'wind', 'rain']
 area = ['area']
@@ -21,17 +23,23 @@ df, pcc = preprocess_data()
 
 X = df[features].values
 
-#X1 = pf1.fit_transform(X)
+X1 = pf1.fit_transform(X)
 #X2 = pf2.fit_transform(X)
 #X3 = pfYC.fit_transform(X)
 #X4 = pf4.fit_transform(X)
-X6 = pf6.fit_transform(X)
+#X6 = pf6.fit_transform(X)
 
 Y = df[area].values
 
-#model1 = PolyModel(X1, Y)
+folds, top = getKDataFolds(10)
+
+mer, bler = kFoldCrossValidation(folds)
+
+print(mer)
+
 #model2 = PolyModel(X2, Y)
 #model3 = PolyModel(X3, Y)
 #model4 = PolyModel(X4, Y)
-model6 = PolyModel(X6, Y)
+#model6 = PolyModel(X6, Y)
+
 
