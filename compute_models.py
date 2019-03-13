@@ -23,7 +23,7 @@ df, pcc = preprocess_data()
 
 X = df[features].values
 
-X1 = pf1.fit_transform(X)
+#X1 = pf1.fit_transform(X)
 #X2 = pf2.fit_transform(X)
 #X3 = pfYC.fit_transform(X)
 #X4 = pf4.fit_transform(X)
@@ -32,10 +32,10 @@ X1 = pf1.fit_transform(X)
 Y = df[area].values
 
 folds, top = getKDataFolds(10)
+for i in range(1,7):
+    mer, bler = kFoldCrossValidation(folds, i)
+    print(mer)
 
-mer, bler = kFoldCrossValidation(folds)
-
-print(mer)
 
 #model2 = PolyModel(X2, Y)
 #model3 = PolyModel(X3, Y)

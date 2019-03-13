@@ -2,6 +2,7 @@ import numpy as np
 import math
 from sklearn.preprocessing import PolynomialFeatures
 from PolyModel import PolyModel
+from NicksPolyClass import genPolyFeatures
 
 def mse(model, X, Y):
     N = len(X)
@@ -22,7 +23,7 @@ def rmse(model, X, Y):
     rmse = math.sqrt(total)
     return rmse
 
-def kFoldCrossValidation(xFolds):
+def kFoldCrossValidation(xFolds, degree=1):
     features = ['X', 'Y', 'month', 'day', 'FFMC', 'DMC', 'DC', 'ISI', 'temp', 'RH', 'wind', 'rain']
     area = ['area']
     N = len(xFolds)
@@ -43,6 +44,8 @@ def kFoldCrossValidation(xFolds):
                     np.append(y, xFolds[i][area].values, axis=0)
                     #x.append(xFolds[i][features].values, axis=0)
                     #y.append(xFolds[i][area].values, axis=0)
+        x = genPolyFeatures(x, degree)
+        xTest = genPolyFeatures(xTest, degree)
         model = PolyModel(x, y)
         mseList.append(mse(model, xTest, yTest))
         rmseList.append(rmse(model, xTest, yTest))
