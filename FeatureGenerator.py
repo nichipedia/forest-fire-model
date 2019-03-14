@@ -9,6 +9,8 @@ def genPolyFeatures(X, degree=1):
     sqr = np.power(col, degree)
     ab = col*col1
     X = np.concatenate((ones, X), 1)
+    if degree == 1:
+        return X
     X = np.concatenate((X, ab), 1)
     X = np.concatenate((X, sqr), 1)
     return X
