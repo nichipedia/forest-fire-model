@@ -6,14 +6,15 @@ from data_tools import preprocess_data
 data, pcc = preprocess_data(False)
 top5 = pcc.head().index.values
 y = data['area'].values
+print(pcc)
 
 for label in top5:
     x = data[label].values
-    title = label + '.VS.' + 'area'
+    title = '{}_VS_{}'.format('area', label)
     plt.title(title)
     plt.xlabel(label)
     plt.ylabel('area')
     plt.ylim(0, 400)
     plt.scatter(x,y,c='blue')
-    plt.savefig('./plots/' + title + '.png')
+    plt.savefig('./plots/{}.png'.format(title))
     plt.clf()
